@@ -1,5 +1,4 @@
 <% content_for :title do %>Events<% end %>
-<div id='test'>
 <div class='row'>
 	<div class='col-lg-8'>
 		<nav class="navbar navbar-default">
@@ -18,87 +17,94 @@
 <div class="row">
 	<div class="col-lg-8">
 		<h2>Welcome, <%=@user.first_name%></h2>
-			<!-- ############## local events table ################# -->
-			<p>Here are some of the events at your state.</p>
-			<table class="table table-striped table-bordered">
-				<tr>
-					<th>Name</th>
-					<th>Date</th>
-					<th>Location</th>
-					<th>Host</th>
-					<th colspan='2'>Action/status</th>
-				</tr>
-				<% @event.each do |event|%>
-				<tr>
-					<td><a href="events/<%=event.id%>"><%=event.name%></a></td>
-					<td><%=event.date.strftime("%B %d %Y")%></td>
-					<td><%=event.location%></td>
-					<td><%=event.user.first_name%></td>
-					<td>
-						<%if event.user_id == current_user.id %>
-						<a href="/events/<%=event.id%>/edit">Edit</a>
-						<form style="display: inline-block" action='/events/<%=event.id%>' method='post'>
-							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-							<input type="hidden" name="_method" value="delete">
-							<input type='submit' value='Delete'>
-						</form>
-						<%elsif Attendee.where(user: User.find(current_user), event: event.id).count ==0%>
-						<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
-							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-							<input type='submit' value='Join'>
-						</form>
-						<%else%>
-						Joining
-						<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
-							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-							<input type="hidden" name="_method" value="delete">
-							<input type='submit' value='Cancel'>
-						</form>
-						<%end%>
-					</td>
-				</tr>
-				<%end%>
-			</table>
-		</div>
+		<!-- ############## local events table ################# -->
+		<p>Here are some of the events at your state.</p>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>Location</th>
+				<th>State</th>
+				<th>Host</th>
+				<th>Action</th>
+			</tr>
+			<% @event.each do |event|%>
+			<tr>
+				<td><a href="events/<%=event.id%>"><%=event.name%></a></td>
+				<td><%=event.date.strftime("%B %d %Y")%></td>
+				<td><%=event.location%></td>
+				<td><%=event.state%></td>
+				<td><%=event.user.first_name%></td>
+				<td>
+					<%if event.user_id == current_user.id %>
+					<form style="display: inline-block" action='/events/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<input type="hidden" name="_method" value="delete">
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+					<a href="/events/<%=event.id%>/edit">Edit</a>
+					<%elsif Attendee.where(user: User.find(current_user), event: event.id).count ==0%>
+					<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<button type="submit" class="btn btn-primary">Join</button>
+					</form>
+					<%else%>
+					<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<input type="hidden" name="_method" value="delete">
+						<button type="submit" class="btn btn-warning">Unjoin</button>
+					</form>
+					<%end%>
+				</td>
+			</tr>
+			<%end%>
+		</table>
 	</div>
-	<div class="row">
-		<div class="col-lg-8">
-			<p>Here are some of the events in other states.</p>
-			<!-- ############## other events table ################# -->
-			<table class="table table-striped table-bordered">
-				<tr>
-					<th>Name</th>
-					<th>Date</th>
-					<th>Location</th>
-					<th>State</th>
-					<th>Host</th>
-					<th>Action</th>
-				</tr>
-				<% @event2.each do |event|%>
-				<tr>
-					<td><a href="events/<%=event.id%>"><%=event.name%></a></td>
-					<td><%=event.date.strftime("%B %d %Y")%></td>
-					<td><%=event.location%></td>
-					<td><%=event.state%></td>
-					<td><%=event.user.first_name%></td>
-					<td>
-						<%if Attendee.where(user: User.find(current_user), event: event.id).count ==0%>
-						<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
-							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-							<input type='submit' value='Join'>
-						</form>
-						<%else%>
-						Joining
-						<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
-							<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-							<input type="hidden" name="_method" value="delete">
-							<input type='submit' value='Cancel'>
-						</form>
-						<%end%>
-					</td>
-				</tr>
-				<%end%>
-			</table>
+</div>
+<div class="row">
+	<div class="col-lg-8">
+		<p>Here are some of the events in other states.</p>
+		<!-- ############## other events table ################# -->
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>Location</th>
+				<th>State</th>
+				<th>Host</th>
+				<th>Action</th>
+			</tr>
+			<% @event2.each do |event|%>
+			<tr>
+				<td><a href="events/<%=event.id%>"><%=event.name%></a></td>
+				<td><%=event.date.strftime("%B %d %Y")%></td>
+				<td><%=event.location%></td>
+				<td><%=event.state%></td>
+				<td><%=event.user.first_name%></td>
+				<td>
+					<%if event.user_id == current_user.id %>
+					<form style="display: inline-block" action='/events/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<input type="hidden" name="_method" value="delete">
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+					<a href="/events/<%=event.id%>/edit">Edit</a>
+					<%elsif Attendee.where(user: User.find(current_user), event: event.id).count ==0%>
+					<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<button type="submit" class="btn btn-primary">Join</button>
+					</form>
+					<%else%>
+					<form style="display: inline-block" action='/attendees/<%=event.id%>' method='post'>
+						<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+						<input type="hidden" name="_method" value="delete">
+						<button type="submit" class="btn btn-warning">Unjoin</button>
+					</form>
+					<%end%>
+				</td>
+			</tr>
+			<%end%>
+		</table>
 	</div>
 </div>
 <!-- ################## add event ############### -->
@@ -124,7 +130,7 @@
 			<div class="form-group">
 				<label for="location">Location</label>
 				<input type="text" name="event[location]" class="form-control" id="Email" placeholder="location">
-				<input type="hidden" name="authenticity_token" placeholder="<%=form_authenticity_token%>">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
 			</div>
 			<div class="form-group">
 				<label for="name">State</label>
@@ -137,5 +143,4 @@
 			<button type="submit" class="btn btn-primary">Add Event</button>
 		</form>
 	</div>
-</div>
 </div>
