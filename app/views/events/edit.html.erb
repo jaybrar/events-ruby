@@ -1,0 +1,56 @@
+<% content_for :title do %>Edit Event<% end %>
+<div class='row'>
+	<div class='col-lg-8'>
+		<nav class="navbar navbar-default">
+			<h3 style="display:inline-block">Events Blog</h3>
+			<a href="/events"><button class="btn btn-info">Events Dashboard</button></a>
+			<form class="navbar-form navbar-right" action='/sessions' method='post'>
+			  <div class="form-group">
+			  	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+			    <input type='hidden' name='_method' value='delete'>
+			  </div>
+			  <button type="submit" class="btn btn-warning">Log Out</button>
+			</form>
+		</nav>
+	</div>
+</div>
+<div class="row">
+<div class="col-lg-8">
+	<h2>Edit Event</h2>
+	<% if flash[:errors] %>
+	<% flash[:errors].each do |error| %>
+	<p style="color:red"><%= error %></p>
+	<% end %>
+	<% end %>
+	<form action='/events/<%= @event.id %>' method='post'>
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" name="edit[name]" class="form-control" id="name" value="<%=@event.name%>">
+				<input type="hidden" name="_method" value="patch">
+			</div>
+			<div class="form-group">
+				<label for="name">Date</label>
+				<input type="date" name="edit[date]" value="<%=@event.date.strftime('%Y-%m-%d')%>" class="form-control" id="date">
+			</div>
+			<div class="form-group">
+				<label for="location">Location</label>
+				<input type="text" name="edit[location]" class="form-control" id="Email" value="<%=@event.location%>">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			</div>
+			<div class="form-group">
+				<label for="name">State</label>
+				<select name="edit[state]">
+					<% us_states.each do |state| %>
+					<option value="<%=state[1]%>" 
+						<% if @event.state==state[1]%>
+						<%='selected'%>
+						<%end%>
+						><%=state[1]%>
+					</option>
+					<% end %>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-primary">Update Event</button>
+		</form>
+</div>
+</div>

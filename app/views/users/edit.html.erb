@@ -1,0 +1,55 @@
+<% content_for :title do %>Profile<% end %>
+<div class='row'>
+	<div class='col-lg-8'>
+		<nav class="navbar navbar-default">
+			<h3 style="display:inline-block">Events Blog</h3>
+			<a href="/events"><button class="btn btn-info">Events Dashboard</button></a>
+			<form class="navbar-form navbar-right" action='/sessions' method='post'>
+			  <div class="form-group">
+			  	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+			    <input type='hidden' name='_method' value='delete'>
+			  </div>
+			  <button type="submit" class="btn btn-warning">Log Out</button>
+			</form>
+		</nav>
+	</div>
+</div>
+<div class='row'>
+	<div class="col-lg-4">
+		<h1>Edit Profile</h1>
+<% if flash[:errors] %>
+  <% flash[:errors].each do |e| %>
+    <p style="color:red"><%= e %></p>
+  <% end %>
+<% end %>
+		<form action='/users/<%=@user.id%>' method='post'>
+			<div class="form-group">
+				<label for="name">First_name</label>
+				<input type="text" name="edit[first_name]" class="form-control" id="first_name" value="<%=@user.first_name%>">
+				<input type='hidden' name="_method" value="patch">
+			</div>
+			<div class="form-group">
+				<label for="name">Last_name</label>
+				<input type="text" name="edit[last_name]" class="form-control" id="last_name" value="<%=@user.last_name%>">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputEmail1">Email address</label>
+				<input type="email" name="edit[email]" class="form-control" id="Email" value="<%=@user.email%>">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			</div>
+			<div class="form-group">
+				<label for="name">Location</label>
+				<input type="text" name="edit[location]" class="form-control" id="location" value="<%=@user.location%>">
+			</div>
+			<div class="form-group">
+				<label for="name">State</label>
+				<select name="edit[state]">
+					<% us_states.each do |state| %>
+					<option value="<%=state[1]%>" <% if @user.state==state[1]%><%='selected'%><%end%>><%= state[1] %></option>
+					<% end %>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form>
+	</div>
+</div>

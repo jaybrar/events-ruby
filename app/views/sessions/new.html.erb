@@ -1,0 +1,67 @@
+<% content_for :title do %>Log In<% end %>
+<div class='row'>
+	<div class="col-lg-4">
+		<h1>Please Sign Up</h1>
+<% if flash[:errors] %>
+  <% flash[:errors].each do |e| %>
+    <p style="color:red"><%= e %></p>
+  <% end %>
+<% end %>
+		<form action='/users/new' method='post'> 
+			<div class="form-group">
+				<label for="name">first_name</label>
+				<input type="text" name="user[first_name]" class="form-control" id="first_name" placeholder="first name">
+			</div>
+			<div class="form-group">
+				<label for="name">last_name</label>
+				<input type="text" name="user[last_name]" class="form-control" id="last_name" placeholder="last name">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputEmail1">Email address</label>
+				<input type="email" name="user[email]" class="form-control" id="Email" placeholder="Email">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			</div>
+			<div class="form-group">
+				<label for="name">Location</label>
+				<input type="text" name="user[location]" class="form-control" id="location" placeholder="location">
+			</div>
+			<div class="form-group">
+				<label for="name">state</label>
+				<select name="user[state]">
+					<% us_states.each do |state| %>
+					<option value="<%=state[1]%>"><%= state[0] %> <%= state[1] %></option>
+					<% end %>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">Password</label>
+				<input type="password" name="user[password]" class="form-control" id="Password" placeholder="Password">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword2">Password Confirmation</label>
+				<input type="password" name="user[password_confirmation]" class="form-control" id="Password Confirmation" placeholder="Password Confirmation">
+			</div>
+			<button type="submit" class="btn btn-primary">Join</button>
+		</form>
+	</div>
+	<div class="col-lg-4">
+		<h1>Please Sign In</h1>
+<% if flash[:error] %>
+  <% flash[:error].each do |e| %>
+    <p style="color:red"><%= e %></p>
+  <% end %>
+<% end %>
+			<form action='/sessions' method='post'>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Email address</label>
+					<input type="email" name="email" class="form-control" id="Email" placeholder="Email">
+					<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Password</label>
+					<input type="password" name="password" class="form-control" id="Password" placeholder="Password">
+				</div>
+				<button type="submit" class="btn btn-primary">Log In</button>
+			</form>
+	</div>
+</div>
