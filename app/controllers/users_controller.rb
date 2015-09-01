@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @user = User.find(current_user)
     @resources = User.find(current_user).resources
     @messages = Message.includes(:user).where(receiver_id: current_user)
-    Message.select('*').joins(:user).where("receiver_id = 1")
+    # Message.select('*').joins(:user).where("receiver_id = 1")
   end
 
   def create
