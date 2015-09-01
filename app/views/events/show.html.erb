@@ -1,26 +1,12 @@
-<div class='row'>
-	<div class='col-lg-8'>
-		<nav class="navbar navbar-default">
-			<h3 style="display:inline-block">Events Blog</h3>
-			<a href="/events"><button class="btn btn-info">Events Dashboard</button></a>
-			<form class="navbar-form navbar-right" action='/sessions' method='post'>
-			  <div class="form-group">
-			  	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-			    <input type='hidden' name='_method' value='delete'>
-			  </div>
-			  <button type="submit" class="btn btn-warning">Log Out</button>
-			</form>
-		</nav>
-	</div>
-</div>
-
+<% content_for :title do %><%=@event.name%><% end %>
+<%= render :partial => "events/nav" %>
 <div class="row">
-	<div class='col-lg-4'>
+	<div class='col-lg-6'>
 		<h2><%=@event.name%></h2>
 		<p>Host: <%=@event.user.first_name%> <%=@event.user.last_name%></p>
-		<p>Date: <%=@event.date%></p>
+		<p>Date: <%=@event.date.strftime("%B %d %Y")%></p>
 		<p>Location: <%=@event.location%>, <%=@event.state%></p>
-		<p>People who are joining the event: <%=@count%></p>
+		<p>Groups that are joining the event: <%=@count%></p>
 		<table class="table table-striped table-bordered">
 			<tr>
 				<th>Name</th>
@@ -29,18 +15,18 @@
 			</tr>
 			<% @attendees.each do |attendee|%>
 			<tr>
-				<td><%=attendee.first_name%> <%=attendee.last_name%></td>
+				<td><a href="/users/<%=attendee.id%>"><%=attendee.group%></a></td>
 				<td><%=attendee.location%></td>
 				<td><%=attendee.state%></td>
 			</tr>
 			<% end %>
 		</table>
 	</div>
-	<div class='col-lg-4'>
+	<div class='col-lg-6'>
 		<h3>Discussions about this event:</h3>
 		<div id="comments">
 		<% @comments.each do |comment| %>
-		<p><%=comment.user.first_name%> says: <%=comment.content%></p>
+		<p><a href="/users/<%=comment.user.id%>"><%=comment.user.first_name%></a> says: <%=comment.content%></p>
 		<hr>
 		<% end %>
 		</div>
@@ -60,4 +46,18 @@
 		</form>
 	</div>
 </div>
+<div style='width: auto;'>
+		  <div id="map" style='width: auto; height: 400px;'>
+		  </div>
+		</div>
+<script>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {},internal: {id: 'map'}},function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+</script>
 

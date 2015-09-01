@@ -1,0 +1,7 @@
+<div class="col-lg-12">
+	<p>President: <%=user.first_name%> <%=user.last_name%></p>
+	<p>Contact: <%=user.email%></p>
+	<p>Group Name: <a href='/users/<%=user.id%>'><%=user.group%></a></p>
+	<p>Location: <%=user.address%> <%=user.location%>, <%=user.state%></p>
+	<p><a target="_blank" href="https://www.google.com/maps/place/<%=user.address%>,+<%=user.location%>,+<%=user.state%>">Directions</a>
+</div>

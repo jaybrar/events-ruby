@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require gmaps_google.js
+//= require bower_components/underscore/underscore
 //= require_tree .
 
 // $(document).ready(function(){

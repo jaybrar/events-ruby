@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
+  root 'sessions#new'
+
   get '/sessions/new' => 'sessions#new'
   post '/sessions' => 'sessions#log_in'
   delete '/sessions' => 'sessions#log_out'
 
-  # get '/users' => 'users#index'
-  # get '/users/new' => 'users#new'
   get '/users/:id' => 'users#show'
+  get '/users' => 'users#index'
+  # get '/users/new' => 'users#new'
   get '/users/:id/edit' => 'users#edit'
   post '/users/new' => 'users#create'
   patch '/users/:id' => 'users#update'
@@ -23,7 +25,19 @@ Rails.application.routes.draw do
 
   post '/comments/:id' => 'comments#create'
 
-  root 'sessions#new'
+  get '/resources' => 'resources#index'
+  get '/resources/:id/edit' => 'resources#edit'
+  get '/resources/:id/delete' => 'resources#destroy'
+  post '/resources' => 'resources#create'
+  patch '/resources/:id' => 'resources#update'
+
+
+  get '/messages/:id/delete' => 'messages#destroy'
+  post '/messages' => 'messages#create'
+  post '/messages2' => 'messages#create2'
+  post '/messages-blast' => 'messages#message_all'
+
+  post '/email' => 'emails#create'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

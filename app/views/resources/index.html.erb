@@ -1,0 +1,67 @@
+<% content_for :title do %>Resources<% end %>
+<%= render :partial => "events/nav" %>
+<div class="row">
+	<div class="col-lg-6">
+	<% if flash[:errors] %>
+		<% flash[:errors].each do |error| %>
+		<p style="color:red"><%= error %></p>
+		<% end %>
+		<% end %>
+	<% @users.each do |u| %>
+	<h4><a href='/users/<%=u.id%>'><%=u.group%> - <%=u.first_name%></a></h4>
+	<form id="messages-form" action='/messages' method="post" class="form-inline">
+		<div class="form-group">
+		<input class="form-control" type="text" name="message[message]">
+		<input type="hidden" name="message[receiver_id]" value="<%=u.id%>">
+		<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+		<button type="submit" class="btn btn-success btn-sm">Leave Msg</button>
+		</div>
+	</form>
+		<% if u.resources.any? %>
+	<table id="resources-table" class="table table-striped table-bordered">
+		<tr>
+		<th>Name</th>
+		<th>Description</th>
+		</tr>
+		<% u.resources.each do |r|%>
+		<tr><td><%= r.name %></td><td><%= r.description %></td></tr>
+		<% end %>
+		<% end %>
+	</table>
+	<% end %>
+	</div>
+	<div class="col-lg-6">
+		<div style='width: auto;'>
+		  <div id="map" style='width: auto; height: 400px;'>
+		  </div>
+		</div>
+		<h4>Send Message To All Groups</h4>
+		<form id="messages-form" action='/messages-blast' method="post" class="form-inline">
+			<div class="form-group">
+				<input class="form-control" type="text" name="message">
+				<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+				<button type="submit" class="btn btn-success btn-sm">Msg Blast</button>
+			</div>
+		</form>
+		<hr>
+		<h4>Send Email To All Groups</h4>
+		<form id="messages-form" action='/email' method="post" class="form-inline">
+			<div class="form-group">
+				<input class="form-control" type="text" name="message">
+				<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+				<button type="submit" class="btn btn-success btn-sm">Email Blast</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {},internal: {id: 'map'}},function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+</script>

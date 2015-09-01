@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723181133) do
+ActiveRecord::Schema.define(version: 20150901040330) do
 
   create_table "attendees", force: true do |t|
     t.integer  "user_id"
@@ -42,9 +42,32 @@ ActiveRecord::Schema.define(version: 20150723181133) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "address"
   end
 
   add_index "events", ["user_id"], name: "index_events_on_user_id"
+
+  create_table "messages", force: true do |t|
+    t.string   "message"
+    t.integer  "receiver_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "messages", ["user_id"], name: "index_messages_on_user_id"
+
+  create_table "resources", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "resources", ["user_id"], name: "index_resources_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"
@@ -55,6 +78,10 @@ ActiveRecord::Schema.define(version: 20150723181133) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "group"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
 end

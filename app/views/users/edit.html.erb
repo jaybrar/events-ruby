@@ -1,19 +1,5 @@
 <% content_for :title do %>Profile<% end %>
-<div class='row'>
-	<div class='col-lg-8'>
-		<nav class="navbar navbar-default">
-			<h3 style="display:inline-block">Events Blog</h3>
-			<a href="/events"><button class="btn btn-info">Events Dashboard</button></a>
-			<form class="navbar-form navbar-right" action='/sessions' method='post'>
-			  <div class="form-group">
-			  	<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-			    <input type='hidden' name='_method' value='delete'>
-			  </div>
-			  <button type="submit" class="btn btn-warning">Log Out</button>
-			</form>
-		</nav>
-	</div>
-</div>
+<%= render :partial => "events/nav" %>
 <div class='row'>
 	<div class="col-lg-4">
 		<h1>Edit Profile</h1>
@@ -38,7 +24,15 @@
 				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
 			</div>
 			<div class="form-group">
-				<label for="name">Location</label>
+				<label for="group">Group Name</label>
+				<input type="text" name="edit[group]" class="form-control" id="group" value="<%=@user.group%>">
+			</div>
+			<div class="form-group">
+				<label for="group">Street Address</label>
+				<input type="text" name="edit[address]" class="form-control" id="street" value="<%=@user.address%>">
+			</div>
+			<div class="form-group">
+				<label for="name">City</label>
 				<input type="text" name="edit[location]" class="form-control" id="location" value="<%=@user.location%>">
 			</div>
 			<div class="form-group">

@@ -4,8 +4,20 @@ class EventsController < ApplicationController
   def index
     @user = User.find(session[:user_id])
     state = @user.state
+    # @count = @attendees.count
     @event = Event.includes(:user).where(state: state)
     @event2 = Event.includes(:user).where.not(state: state)
+    @events = Event.all
+    @hash = Gmaps4rails.build_markers(@events) do |e, marker|
+      marker.lat e.latitude
+      marker.lng e.longitude
+      marker.infowindow render_to_string(partial: "maps", locals: {event: e, count: e.users_attended.count})
+      # marker.picture({
+     #    "url": "http://i.stack.imgur.com/rU427.png",
+     #    "width":  36,
+     #    "height": 36
+      #   })
+      end
   end
 
   def show
@@ -13,6 +25,16 @@ class EventsController < ApplicationController
     @attendees = Event.find(params[:id]).users_attended
     @count = @attendees.count
     @comments = Comment.includes(:user, :event).where("event_id = #{params[:id]}")
+    @hash = Gmaps4rails.build_markers(@event) do |e, marker|
+      marker.lat e.latitude
+      marker.lng e.longitude
+      marker.infowindow render_to_string(partial: "maps", locals: {event: e, count: @count})
+      # marker.picture({
+     #    "url": "http://i.stack.imgur.com/rU427.png",
+     #    "width":  36,
+     #    "height": 36
+      #   })
+      end
   end
 
   def create
@@ -32,7 +54,7 @@ class EventsController < ApplicationController
   end
 
   def update
-     event = Event.find(params[:id])
+    event = Event.find(params[:id])
     event.update(edit_params)
     if event.errors.any?
       flash[:errors] = event.errors.full_messages
@@ -53,12 +75,12 @@ class EventsController < ApplicationController
 
   private
   def event_params
-    params.require(:event).permit(:name, :date, :location, :state)
+    params.require(:event).permit(:name, :date, :address, :location, :state)
   end
 
   private
   def edit_params
-    params.require(:edit).permit(:name, :date, :location, :state)
+    params.require(:edit).permit(:name, :date, :address, :location, :state)
   end
 
 end

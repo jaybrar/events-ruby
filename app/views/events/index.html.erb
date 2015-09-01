@@ -1,19 +1,5 @@
 <% content_for :title do %>Events<% end %>
-<div class='row'>
-	<div class='col-lg-8'>
-		<nav class="navbar navbar-default">
-			<h3 style="display:inline-block">Events Blog</h3>
-			<a href="/users/<%=@user.id%>/edit"><button class="btn btn-info">Edit My Profile</button></a>
-			<form class="navbar-form navbar-right" action='/sessions' method='post'>
-				<div class="form-group">
-					<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-					<input type='hidden' name='_method' value='delete'>
-				</div>
-				<button type="submit" class="btn btn-warning">Log Out</button>
-			</form>
-		</nav>
-	</div>
-</div>
+<%= render :partial => "events/nav" %>
 <div class="row">
 	<div class="col-lg-8">
 		<h2>Welcome, <%=@user.first_name%></h2>
@@ -128,7 +114,11 @@
 				<input type="date" name="event[date]" class="form-control" id="date">
 			</div>
 			<div class="form-group">
-				<label for="location">Location</label>
+				<label for="location">Address</label>
+				<input type="text" name="event[address]" class="form-control" id="address" placeholder="Address">
+			</div>
+			<div class="form-group">
+				<label for="location">City</label>
 				<input type="text" name="event[location]" class="form-control" id="Email" placeholder="location">
 				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
 			</div>
@@ -143,4 +133,20 @@
 			<button type="submit" class="btn btn-primary">Add Event</button>
 		</form>
 	</div>
+	<div class='col-lg-8'>
+		<div style='width: auto;'>
+		  <div id="map" style='width: auto; height: 400px;'>
+		  </div>
+		</div>
+	</div>
 </div>
+<script>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {},internal: {id: 'map'}},function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+</script>

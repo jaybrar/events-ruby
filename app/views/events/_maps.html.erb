@@ -1,0 +1,6 @@
+<h4><a href="/events/<%=event.id%>"><%=event.name%></a></h4>
+<p>Host: <a href="/users/<%=event.user.id%>"><%=event.user.group%></a></p>
+<p>Date: <%=event.date.strftime("%B %d %Y")%></p>
+<p>Location: <%=event.address%> <%=event.location%>, <%=event.state%></p>
+<p>People who are joining the event: <%=count%></p>
+<p><a target="_blank" href="https://www.google.com/maps/place/<%=event.address%>,+<%=event.location%>,+<%=event.state%>">Directions</a>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @current_user.first_name %> from <%= @current_user.group %> deleted the following resource:</h1>
+    <p><%= @resource.name %></p>
+    <p><%= @resource.description %></p>
+    <p>Email: <%= @current_user.email %></p>
+  </body>
+</html>

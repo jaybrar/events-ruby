@@ -1,0 +1,63 @@
+<% content_for :title do %>Group Details<% end %>
+<%= render :partial => "events/nav" %>
+<div class="row">
+	<div class="col-lg-5">
+		<h4>Group Name: <%=@user.group%></h4>
+		<p>President: <%=@user.first_name%> <%=@user.last_name%></p>
+		<p>Contact: <%=@user.email%></p>
+		<p>Location: <%=@user.address%> <%=@user.location%>, <%=@user.state%></p>
+		<% if flash[:errors] %>
+		<% flash[:errors].each do |error| %>
+		<p style="color:red"><%= error %></p>
+		<% end %>
+		<% end %>
+		<% if @user != current_user %>
+		<hr>
+		<p>Leave Message</p>
+		<form action='/messages2' method="post" class="form-inline">
+		<div class="form-group">
+		<input class="form-control" type="text" name="message[message]">
+		<input type="hidden" name="message[receiver_id]" value="<%=@user.id%>">
+		<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+		<button type="submit" class="btn btn-success btn-sm">Leave Msg</button>
+		</div>
+		</form>
+		<% end %>
+	</div>
+	<div class="col-lg-7">
+		<div style='width: auto;'>
+		   <div id="map" style='width: auto; height: 400px;'>
+		   </div>
+		 </div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-8">
+		<p>List of Resources Needed</p>
+		<table id="resources-table" class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Date Added</th>
+			</tr>
+			<% @resources.each do |resource| %>
+			<tr>
+				<td><%= resource.name %></td>
+				<td><%= resource.description %></td>
+				<td><%= resource.created_at.strftime("%B %d %Y") %></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+
+<script>
+handler = Gmaps.build('Google');
+handler.buildMap({
+    provider: {},internal: {id: 'map'}},function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+  }
+);
+</script>

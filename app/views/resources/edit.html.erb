@@ -1,0 +1,25 @@
+<% content_for :title do %>Edit Resource<% end %>
+<%= render :partial => "events/nav" %>
+<div class="row">
+	<div class="col-lg-8">
+		<p>Editing Resource: <%=@resource.name %></p>
+		<% if flash[:errors] %>
+		<% flash[:errors].each do |error| %>
+		<p style="color:red"><%= error %></p>
+		<% end %>
+		<% end %>
+		<form action='/resources/<%=@resource.id %>' method='post'>
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="test" name="edit[name]" class="form-control" id="name" value="<%=@resource.name %>">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label>
+				<input type="text" name="edit[description]" class="form-control" id="description" value="<%=@resource.description %>">
+				<input type="hidden" name="_method" value="patch">
+			</div>
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form>
+	</div>
+</div>

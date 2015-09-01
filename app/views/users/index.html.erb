@@ -1,0 +1,67 @@
+<% content_for :title do %>Profile<% end %>
+<%= render :partial => "events/nav" %>
+<div class="row">
+	<div class="col-lg-7">
+		<a href="/users/<%=@user.id%>/edit">Edit Profile</a>
+		<p>President: <%=@user.first_name%> <%=@user.last_name%></p>
+		<p>Contact: <%=@user.email%></p>
+		<p>Group Name: <%=@user.group%></p>
+		<p>Location: <%=@user.address%> <%=@user.location%>, <%=@user.state%></p>
+		<p>List of Resources Needed</p>
+		<table id="resources-table" class="table table-striped table-bordered">
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Date Added</th>
+				<th>Action</th>
+			</tr>
+			<% @resources.each do |resource| %>
+			<tr>
+				<td><%= resource.name %></td>
+				<td><%= resource.description %></td>
+				<td><%= resource.created_at.strftime("%B %d %Y") %></td>
+				<td><a href="/resources/<%= resource.id %>/edit">Edit</a> <a href="/resources/<%= resource.id %>/delete">Delete</a></td>
+			</tr>
+			<% end %>
+		</table>
+<!-- ***************** add new request ******************** -->
+		<p>Add Request for New Resource</p>
+		<% if flash[:errors] %>
+		  <% flash[:errors].each do |e| %>
+		    <p style="color:red"><%= e %></p>
+		  <% end %>
+		<% end %>
+		<form action='/resources' method='post'>
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="test" name="resource[name]" class="form-control" id="name" placeholder="Name">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label>
+				<input type="text" name="resource[description]" class="form-control" id="description" placeholder="Description">
+			</div>
+			<button type="submit" class="btn btn-primary">Add</button>
+		</form>
+	</div>
+	<div class="col-lg-5">
+<!-- ***************** messages ******************** -->
+		<h4>Your Messages</h4>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Sender</th>
+				<th>Message</th>
+				<th>Date Sent</th>
+				<th>Action</th>
+			</tr>
+		<% @messages.each do |m| %>
+			<tr>
+				<th><a href='/users/<%=m.user.id %>'><%=m.user.first_name %>:</a></th>
+				<th><%=m.message %></th>
+				<th><%=m.created_at.strftime("%B %d %Y")%></th>
+				<th><a href="/messages/<%= m.id %>/delete"> Delete</a></th>
+			</tr>
+		<% end %>
+		</table>
+	</div>
+</div>
