@@ -20,11 +20,11 @@ class ResourcesController < ApplicationController
           flash[:errors] = @resource.errors.full_messages
           redirect_to '/users'
         else
-          resource = current_user.resources.last
-	      users = User.all 
-	      users.each do |u|
-	      AddResource.add(u, current_user, resource).deliver!
-	      end
+       #    resource = current_user.resources.last
+	      # users = User.all 
+	      # users.each do |u|
+	      # AddResource.add(u, current_user, resource).deliver!
+	      # end
 	      redirect_to '/users'
         end
 	end
@@ -46,10 +46,10 @@ class ResourcesController < ApplicationController
 
 	def destroy
 		resource = Resource.find(params[:id]).destroy
-	    users = User.all 
-	    users.each do |u|
-	    DeleteResource.delete(u, current_user, resource).deliver!
-		end
+	 #    users = User.all 
+	 #    users.each do |u|
+	 #    DeleteResource.delete(u, current_user, resource).deliver!
+		# end
 		redirect_to '/users'
 	end
 
