@@ -46,7 +46,9 @@ production:
   encoding: utf8
   database: project_production
   pool: 5
+
   username: ubuntu 
+
   password:
 
 
