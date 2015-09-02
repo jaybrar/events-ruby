@@ -7,13 +7,14 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
   config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_url_options = { :host => "52.88.76.73:80" }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
   # SMTP settings for gmail
   config.action_mailer.smtp_settings = {
    :address              => "smtp.gmail.com",
    :port                 => 25,
-   :domain               => 'gmail.com',
+   :domain               => '52.88.76.73:80',
    :user_name            => 'jaybrar79@gmail.com',
    :password             => 'brar4463',
    :authentication       => "plain",
