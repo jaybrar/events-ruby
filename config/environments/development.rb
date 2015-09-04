@@ -16,7 +16,7 @@ Rails.application.configure do
    :port                 => 25,
    :domain               => '52.88.76.73:80',
    :user_name            => 'jaybrar79@gmail.com',
-   :password             => 'brar4463',
+   :password             => 'your password',
    :authentication       => "plain",
    :enable_starttls_auto => true
   }
